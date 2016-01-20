@@ -1,0 +1,17 @@
+<% content_for :head do %>
+    <title>TheMovieDB - Open Api Graphs</title>
+    <%= stylesheet_link_tag    'themoviedb/themoviedb', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'themoviedb/themoviedb', 'data-turbolinks-track' => true %>
+<% end %>
+
+<h1>The movie DB</h1>
+
+<%= bootstrap_form_tag url: 'themoviedb/director', html: { id:'search_director_form' } do |f| %>
+    <%= f.text_field :name, label: 'Director name', value: 'Quentin Tarantino' %>
+    <%= f.submit 'Search' %>
+<% end %>
+<div id="loading" style="display:none;"><img class="center-block" src="/img/loading.gif"></div>
+<div id="graph"></div>
+<!--<pre>-->
+  <!--<%= @results ? JSON.pretty_generate(@results) : 'Not find yet'%>-->
+<!--</pre>-->

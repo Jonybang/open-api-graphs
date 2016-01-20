@@ -1,0 +1,23 @@
+#graph {
+  min-height: 900px;
+}
+.node {
+  stroke: #999;
+  stroke-width: 1.5px;
+  cursor:pointer;
+}
+.node.active {
+  stroke: #FB9F32;
+  stroke-width: 4;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+  stroke-width: 2;
+}
+.link.active {
+  stroke: #FB9F32;
+  stroke-opacity: 1;
+  stroke-width: 4;
+}
