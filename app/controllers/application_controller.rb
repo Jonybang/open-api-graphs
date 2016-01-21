@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def apps
     @apps = {
-        themoviedb: 'Movies Api'
+        themoviedb: 'Movies Graphs'
     }
   end
 end

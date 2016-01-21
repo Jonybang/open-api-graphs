@@ -4,7 +4,8 @@
     <%= javascript_include_tag 'themoviedb/themoviedb', 'data-turbolinks-track' => true %>
 <% end %>
 
-<h1>The movie DB</h1>
+<h1>Movies Graphs</h1>
+<h2>Enter the name of the stage-director to see the actors who acted in some of his films</h2>
 
 <%= bootstrap_form_tag url: 'themoviedb/director', html: { id:'search_director_form' } do |f| %>
     <select class="select2" name="name">
