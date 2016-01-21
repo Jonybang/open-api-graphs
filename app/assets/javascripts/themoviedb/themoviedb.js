@@ -2,10 +2,18 @@
 //= require d3-graphs/spider
 
 var ready = function() {
+    var loading = false;
     $('#search_director_form').submit(function() {
+        if(loading)
+            return;
+
+        loading = true;
         $('#loading').show();
+
         $(this).ajaxSubmit(function(data) {
             initFilmsSpider(data);
+
+            loading = false;
             $('#loading').hide();
         }, function(){
             console.log('error');
@@ -39,7 +47,7 @@ var initFilmsSpider = function (films) {
             })
         }
     });
-
+    $('#graph').html('');
     var filmsSpider = new Spider();
     $.extend(filmsSpider.config, {
         container: '#graph',

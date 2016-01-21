@@ -6,7 +6,7 @@ Spider.prototype = {
         container: "body .content",
         dynamicAdd: false,
         circle: {
-            size: 100
+            size: 80
         },
         output: {
             image: function(d) { return d.photo_100;},
@@ -14,7 +14,7 @@ Spider.prototype = {
             id: function(d) { return d.id; }
         },
         force: {
-            linkDistance: 500, //500
+            linkDistance: 300, //500
             charge: -220, //-120
             gravity: .025, //.05
             friction: 0.6, //0.6
@@ -60,7 +60,7 @@ Spider.prototype = {
             //.theta(0.1)
             //.chargeDistance((graphic.width > graphic.height ? graphic.height : graphic.width)-200)
             //.distance(500)
-            .size([graphic.width, graphic.height]);
+            .size([graphic.width-200, graphic.height-200]);
 
         this.force
             .nodes(graph.nodes)
@@ -75,6 +75,7 @@ Spider.prototype = {
         if(graph.nodes.length && graph.links.length){
             graph.nodes.forEach(function(node){
                 node.dest = self.helpers.randomCoords(graphic);
+                console.log('dest', node.dest);
             });
             this.linksBinding();
             this.renderNodes();
@@ -128,7 +129,7 @@ Spider.prototype = {
         if(!e)
             return;
 
-        var k = .1 * e.alpha;
+        var k = .2 * e.alpha;
 
         // Push nodes toward their designated focus.
         graph.nodes.forEach(function(o, i) {
@@ -146,11 +147,16 @@ Spider.prototype = {
     },
     moveNodes: function(){
         var graphic = this.graphic;
+        var graph = this.graph;
         var config = this.config;
 
         graphic.node
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+            .attr("cx", function(d) {
+                return d.x;
+            })
+            .attr("cy", function(d) {
+                return d.y;
+            });
 
         if(graphic.images.length) {
             graphic.images.attr("x", function (d) {
@@ -239,12 +245,12 @@ Spider.prototype = {
 
         //привязывание евентов
         graphic.node.call(graphic.node_drag);
-        graphic.node.on('dblclick', function(d, i){
-            //self.nodeDoubleClick(d, i);
-        });
 
         //Вставка подписей
-        circle
+        graphic.node.
+            on('dblclick', function(d, i){
+                self.nodeDoubleClick(d, i);
+            })
             .append("title")
             .text(config.output.title);
     },
