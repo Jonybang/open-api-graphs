@@ -7,7 +7,7 @@
 <h1>The movie DB</h1>
 
 <%= bootstrap_form_tag url: 'themoviedb/director', html: { id:'search_director_form' } do |f| %>
-    <%= f.text_field :name, label: 'Director name', value: 'Quentin Tarantino' %>
+    <select class="select2" name="name">
     <%= f.submit 'Search' %>
 <% end %>
 <div id="loading" style="display:none;"><img class="center-block" src="/img/loading.gif"></div>

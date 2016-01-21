@@ -16,9 +16,9 @@ Spider.prototype = {
         force: {
             linkDistance: 300, //500
             charge: -220, //-120
-            gravity: .025, //.05
-            friction: 0.6, //0.6
-            linkStrength: 0.05 //0.1
+            gravity: .001, //.05
+            friction: 0.3, //0.6
+            linkStrength: 0.2 //0.1
         },
         behavior: {
             dblClickCircleRadius: 150 //100
@@ -129,7 +129,7 @@ Spider.prototype = {
         if(!e)
             return;
 
-        var k = .2 * e.alpha;
+        var k = 6 * e.alpha;
 
         // Push nodes toward their designated focus.
         graph.nodes.forEach(function(o, i) {
@@ -244,13 +244,14 @@ Spider.prototype = {
             .attr("fill", function(d) { return 'url(#' + config.output.id(d) + ')' });
 
         //привязывание евентов
-        graphic.node.call(graphic.node_drag);
-
-        //Вставка подписей
-        graphic.node.
+        graphic.node
+            .call(graphic.node_drag).
             on('dblclick', function(d, i){
                 self.nodeDoubleClick(d, i);
-            })
+            });
+
+        //Вставка подписей
+        graphic.node
             .append("title")
             .text(config.output.title);
     },

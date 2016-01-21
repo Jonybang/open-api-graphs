@@ -10,8 +10,10 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require d3
 //= require jquery
-//= require jquery.form.min
 //= require jquery_ujs
-//= require turbolinks
+//= require jquery.form.min
+//= require select2.full.min
 //= require bootstrap-sprockets
+//= require turbolinks

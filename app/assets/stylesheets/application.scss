@@ -11,6 +11,8 @@
  * file per style scope.
  *
  *= require rails_bootstrap_forms
+ *= require select2.min
+ *= require select2-bootstrap.min
  *= require_tree .
  *= require_self
  */

@@ -1,7 +1,18 @@
-//= require d3
 //= require d3-graphs/spider
 
 var ready = function() {
+    var data = ['Quentin Tarantino', 'Alfred Hitchcock', 'Martin Scorsese' , 'Steven Spielberg' ,'Francis Coppola',
+        'Stanley Kubrick', 'Sergio Leone', 'Tim Burton'];
+
+    $(".select2").select2({
+        data: data,
+        width: '300px',
+        placeholder: 'Director name input',
+        allowClear: true,
+        tags: true,
+        theme: "bootstrap"
+    });
+
     var loading = false;
     $('#search_director_form').submit(function() {
         if(loading)
