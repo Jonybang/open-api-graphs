@@ -8,11 +8,8 @@
 <h2>Enter the name of the stage-director to see the actors who acted in some of his films</h2>
 
 <%= bootstrap_form_tag url: 'themoviedb/director', html: { id:'search_director_form' } do |f| %>
-    <select class="select2" name="name">
+    <select class="select2" name="name"></select>
     <%= f.submit 'Search' %>
 <% end %>
 <div id="loading" style="display:none;"><img class="center-block" src="/img/loading.gif"></div>
 <div id="graph"></div>
-<!--<pre>-->
-  <!--<%= @results ? JSON.pretty_generate(@results) : 'Not find yet'%>-->
-<!--</pre>-->
