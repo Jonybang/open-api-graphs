@@ -12,6 +12,16 @@ Spider.prototype = {
             image: function(d) { return d.photo_100;},
             title: function(d) { return d.first_name + ' ' + d.last_name; },
             id: function(d) { return d.id; }
+        },
+        force: {
+            linkDistance: 500, //500
+            charge: -220, //-120
+            gravity: .025, //.05
+            friction: 0.6, //0.6
+            linkStrength: 0.05 //0.1
+        },
+        behavior: {
+            dblClickCircleRadius: 150 //100
         }
     },
     graphic: { patterns: [], node: [], link: []},
@@ -29,7 +39,8 @@ Spider.prototype = {
 
         graphic.svg = d3.select(config.container).append("svg")
             .attr("width", graphic.width)
-            .attr("height", graphic.height);
+            .attr("height", graphic.height)
+            .append('g');
 
         graphic.node = graphic.svg.selectAll(".node");
         graphic.link = graphic.svg.selectAll(".link");
@@ -40,11 +51,14 @@ Spider.prototype = {
             .selectAll('.user-image');
 
         this.force = d3.layout.force()
-            .linkDistance(500)
-            .charge(-120)
-            .gravity(.05)
-            .friction(0.6)
-            .linkStrength(0.1)
+            .linkDistance(config.force.linkDistance)
+            .linkStrength(config.force.linkStrength)
+            .charge(config.force.charge)
+            .gravity(config.force.gravity)
+            .friction(config.force.friction)
+            //.alpha(0.01)
+            //.theta(0.1)
+            //.chargeDistance((graphic.width > graphic.height ? graphic.height : graphic.width)-200)
             //.distance(500)
             .size([graphic.width, graphic.height]);
 
@@ -75,7 +89,8 @@ Spider.prototype = {
 
         function dragstart(d, i) {
             force.stop(); // stops the force auto positioning before you start dragging
-            graph.activeIndex = i;
+            graph.currentIndex = i;
+            graph.currentNode = d;
 
             graph.activeNodes = graph.links.map(function(link){
                 var source = link.source.index, target = link.target.index;
@@ -85,7 +100,9 @@ Spider.prototype = {
 
                 if(target != i && source == i && graph.activeNodes.indexOf(graph.nodes[target]) == -1)
                     return target;
-            });
+
+                return false;
+            }).filter(Boolean);
             graph.activeNodes.push(i);
         }
         function dragmove(d, i) {
@@ -157,7 +174,7 @@ Spider.prototype = {
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; })
             .classed('active', function(d){
-                return d.source.index == graph.activeIndex || d.target.index == graph.activeIndex;
+                return d.source.index == graph.currentIndex || d.target.index == graph.currentIndex;
             });
 
         graphic.node
@@ -184,6 +201,7 @@ Spider.prototype = {
         });
     },
     renderNodes: function(){
+        var self = this;
         var graphic = this.graphic;
         var graph = this.graph;
         var config = this.config;
@@ -221,6 +239,9 @@ Spider.prototype = {
 
         //привязывание евентов
         graphic.node.call(graphic.node_drag);
+        graphic.node.on('dblclick', function(d, i){
+            //self.nodeDoubleClick(d, i);
+        });
 
         //Вставка подписей
         circle
@@ -275,6 +296,42 @@ Spider.prototype = {
 
         if(config.dynamicAdd)
             this.renderLinks();
+    },
+    nodeDoubleClick: function (d, i) {
+        var self = this;
+        var force = this.force;
+        var graph = this.graph;
+        var graphic = this.graphic;
+        var config = this.config;
+
+        var activeNodesCount = graph.activeNodes.length - 1;
+
+        var x_center = graph.currentNode.x, y_center = graph.currentNode.y;
+        var _i = 0;
+        graphic.node
+            .attr('cx', function(d){
+                if(i != graph.currentIndex && graph.activeNodes.indexOf(i) != -1){
+                    d.x = x_center;
+                }
+                return d.x;
+            })
+            .attr('cy', function(d){
+                if(i != graph.currentIndex && graph.activeNodes.indexOf(i) != -1){
+                    d.y = y_center;
+                }
+                return d.y;
+            })
+            .attr("transform", function(d, i) {
+                if(i == graph.currentIndex || graph.activeNodes.indexOf(i) == -1)
+                    return '';
+                else{
+                    _i++;
+                    //d.fixed = true;
+                    return "rotate(" + (360 * _i / activeNodesCount)  + " " + x_center + " " + y_center + ")"
+                        + "translate(" + config.behavior.dblClickCircleRadius +")";
+                }
+            });
+
     },
 
     helpers:{
