@@ -1,4 +1,4 @@
-server '128.199.219.149', roles: [:web, :app, :db], primary: true
+server '37.139.6.102', roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:jonybang/open-api-graphs.git'
 set :application,     'open_api_graphs'
